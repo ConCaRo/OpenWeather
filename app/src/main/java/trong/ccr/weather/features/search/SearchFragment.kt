@@ -2,6 +2,7 @@ package trong.ccr.weather.features.search
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,12 +28,13 @@ class SearchFragment :
     override fun initViewModel() {
         viewModel = ViewModelProvider(this, factory).get(SearchViewModel::class.java)
         binding?.lifecycleOwner = viewLifecycleOwner
+        binding?.vm = viewModel
         observeChanges()
     }
 
     private fun observeChanges() {
         viewModel.weather.observe(viewLifecycleOwner, Observer {
-            adapter?.submitList(it)
+            adapter?.submitList(it.data)
         })
     }
 

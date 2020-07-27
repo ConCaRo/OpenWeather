@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <import type="trong.ccr.weather.data.source.Status"/>
+        <import type="android.view.View"/>
         <variable
-            name="item"
-            type="trong.ccr.weather.data.source.entity.Weather" />
+            name="vm"
+            type="trong.ccr.weather.features.search.SearchViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,6 +34,19 @@
             android:id="@+id/recyclerview"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="@{vm.weather.status != Status.ERROR ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/edt_search" />
+
+        <TextView
+            android:id="@+id/tvEmpty"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:text="@{`Search ` + vm.observeQuery + ` empty`}"
+            android:visibility="@{vm.weather.status == Status.ERROR || vm.weather.data.size() == 0 ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
