@@ -7,7 +7,7 @@ import trong.ccr.weather.data.source.Resource
 import trong.ccr.weather.data.source.entity.Weather
 import javax.inject.Inject
 
-class SearchViewModel @Inject constructor(private val appRepository: AppRepository) : ViewModel() {
+class SearchViewModel @Inject constructor(appRepository: AppRepository) : ViewModel() {
 
     companion object {
         const val DEFAULT_PLACE = "saigon"
@@ -15,7 +15,7 @@ class SearchViewModel @Inject constructor(private val appRepository: AppReposito
 
     private val query: MutableLiveData<String> =
         MutableLiveData<String>().apply { value = DEFAULT_PLACE }
-    val observeQuery : LiveData<String> = query
+    var observeQuery : MutableLiveData<String> = query
 
     private var _weathers: LiveData<Resource<List<Weather>>> = query.asFlow()
         .debounce(500)
@@ -28,8 +28,4 @@ class SearchViewModel @Inject constructor(private val appRepository: AppReposito
         .catch { throwable -> print(throwable.message) }
         .asLiveData()
     val weather: LiveData<Resource<List<Weather>>> = _weathers
-
-    fun search(text: String) {
-        query.value = text
-    }
 }

@@ -18,7 +18,14 @@ class AppRepositoryImp @Inject constructor(private val localDataSource: LocalDat
         return networkBoundResource(
             query = { localDataSource.list() },
             fetch = { remoteDataSource.searchWeathers(text) },
-            saveFetchResult = { localDataSource.insert(it) }
+            saveFetchResult = { localDataSource.insert(it) },
+            onFetchFailed = {
+                localDataSource.delete()
+            }
         )
+    }
+
+    override fun getWeather(id: Int): Flow<Weather> {
+        return localDataSource.getWeather(id)
     }
 }

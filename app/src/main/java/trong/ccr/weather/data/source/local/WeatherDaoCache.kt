@@ -9,4 +9,8 @@ interface WeatherDaoCache {
     fun list(): Flow<List<Weather>>
 
     suspend fun insert(list: List<Weather>)
+
+    fun getWeather(id: Int): Flow<Weather>
+
+    suspend fun delete()
 }

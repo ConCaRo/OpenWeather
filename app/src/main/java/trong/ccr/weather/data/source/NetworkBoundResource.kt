@@ -10,7 +10,7 @@ inline fun <ResultType, RequestType> networkBoundResource(
     crossinline query: () -> Flow<ResultType>,
     crossinline fetch: suspend () -> Flow<RequestType>,
     crossinline saveFetchResult: suspend (RequestType) -> Unit,
-    crossinline onFetchFailed: (Throwable) -> Unit = { Unit },
+    crossinline onFetchFailed: suspend (Throwable) -> Unit = { Unit },
     crossinline shouldFetch: (ResultType) -> Boolean = { true }
 ) = flow<Resource<ResultType>> {
     emit(Resource.loading(null))
@@ -23,7 +23,7 @@ inline fun <ResultType, RequestType> networkBoundResource(
             query().map { Resource.success(it) }
         } catch (throwable: Throwable) {
             onFetchFailed(throwable)
-            query().map { Resource.error(throwable, it) }
+            query().map { Resource.error(throwable, it); }
         }
     } else {
         query().map { Resource.success(it) }

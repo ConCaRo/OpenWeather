@@ -1,8 +1,5 @@
 package trong.ccr.weather.features.search
 
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -10,9 +7,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import trong.ccr.weather.R
+import trong.ccr.weather.data.source.Status
 import trong.ccr.weather.databinding.FragmentSearchBinding
-import trong.ccr.weather.features.ViewModelFactory
 import trong.ccr.weather.features.BaseFragment
+import trong.ccr.weather.features.ViewModelFactory
 import trong.ccr.weather.features.autoCleared
 import javax.inject.Inject
 
@@ -34,7 +32,11 @@ class SearchFragment :
 
     private fun observeChanges() {
         viewModel.weather.observe(viewLifecycleOwner, Observer {
-            adapter?.submitList(it.data)
+            if(it.status == Status.ERROR) {
+                adapter?.submitList(null)
+            } else if(it.status == Status.LOADING || it.data != null) {
+                adapter?.submitList(it.data)
+            }
         })
     }
 
@@ -48,19 +50,8 @@ class SearchFragment :
         binding?.recyclerview?.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = this@SearchFragment.adapter
+            setHasFixedSize(true)
         }
-        binding?.edtSearch?.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.search(s.toString())
-            }
-
-        })
-        binding.edtSearch.setText("saigon")
     }
 }

@@ -20,9 +20,17 @@ class LocalDataSource @Inject constructor(private val weatherDao: WeatherDao) : 
 
     override suspend fun insert(list: List<Weather>) {
         withContext(ioDispatcher) {
-            launch {
-                weatherDao.update(list)
-            }
+            launch { weatherDao.update(list) }
+        }
+    }
+
+    override fun getWeather(id: Int): Flow<Weather> {
+        return weatherDao.getWeather(id)
+    }
+
+    override suspend fun delete() {
+        withContext(ioDispatcher) {
+            launch { weatherDao.delete() }
         }
     }
 }

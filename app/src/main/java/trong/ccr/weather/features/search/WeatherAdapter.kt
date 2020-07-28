@@ -42,7 +42,7 @@ class WeatherAdapter(val click: (Weather) -> Unit) : ListAdapter<Weather, Recycl
 private class WeatherDiffCallback : DiffUtil.ItemCallback<Weather>() {
 
     override fun areItemsTheSame(oldItem: Weather, newItem: Weather): Boolean {
-        return oldItem.id == newItem.id
+        return oldItem.id == newItem.id && oldItem.name != newItem.name
     }
 
     override fun areContentsTheSame(oldItem: Weather, newItem: Weather): Boolean {

@@ -1,12 +1,17 @@
 package trong.ccr.weather.features.detail
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.hilt.Assisted
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.*
+import trong.ccr.weather.data.source.AppRepository
 import trong.ccr.weather.data.source.entity.Weather
-import javax.inject.Inject
 
-class DetailViewModel @Inject constructor() : ViewModel() {
+class DetailViewModel @ViewModelInject constructor(
+    @Assisted savedStateHandle: SavedStateHandle,
+    appRepository: AppRepository
+) : ViewModel() {
 
-    private val _weather = MutableLiveData<Weather>()
+    private val _weather: LiveData<Weather> =
+        appRepository.getWeather(savedStateHandle["id"] ?: 0).asLiveData()
     val weather = _weather
 }

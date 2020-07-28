@@ -1,21 +1,18 @@
 package trong.ccr.weather.features.detail
 
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import trong.ccr.weather.R
 import trong.ccr.weather.databinding.FragmentDetailBinding
 import trong.ccr.weather.features.BaseFragment
-import trong.ccr.weather.features.ViewModelFactory
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<DetailViewModel, FragmentDetailBinding>(R.layout.fragment_detail) {
 
-    @Inject
-    lateinit var factory: ViewModelFactory<DetailViewModel>
+    private val vm: DetailViewModel by viewModels()
 
     override  fun initViewModel()  {
-        viewModel = ViewModelProvider(this, factory).get(DetailViewModel::class.java)
+        viewModel = vm
         binding.vm = viewModel
         binding?.lifecycleOwner = viewLifecycleOwner
         observeChanges()
