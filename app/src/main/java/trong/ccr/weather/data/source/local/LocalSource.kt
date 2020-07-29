@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import trong.ccr.weather.data.source.entity.Weather
 
 
-interface WeatherDaoCache {
+interface LocalSource {
 
     fun list(): Flow<List<Weather>>
 

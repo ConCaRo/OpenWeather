@@ -11,9 +11,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RemoteDataSource @Inject constructor(private val networkService: NetworkService) {
+class RemoteDataSource @Inject constructor(private val networkService: NetworkService) :
+    RemoteSource {
 
-    fun searchWeathers(text: String): Flow<List<Weather>> {
+    override fun searchWeathers(text: String): Flow<List<Weather>> {
         return flow {
             emit(networkService.searchWeathers(text).mapToWeathers())
         }

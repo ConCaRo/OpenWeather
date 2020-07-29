@@ -23,7 +23,7 @@ inline fun <ResultType, RequestType> networkBoundResource(
             query().map { Resource.success(it) }
         } catch (throwable: Throwable) {
             onFetchFailed(throwable)
-            query().map { Resource.error(throwable, it); }
+            query().map { Resource.error(throwable, it) }
         }
     } else {
         query().map { Resource.success(it) }

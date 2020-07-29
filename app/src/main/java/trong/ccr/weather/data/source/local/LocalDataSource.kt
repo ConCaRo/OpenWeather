@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import trong.ccr.weather.data.source.entity.Weather
+import trong.ccr.weather.di.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalDataSource @Inject constructor(private val weatherDao: WeatherDao) : WeatherDaoCache {
-
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+class LocalDataSource @Inject constructor(private val weatherDao: WeatherDao,
+                                          @IoDispatcher private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO) : LocalSource {
 
     override fun list(): Flow<List<Weather>> {
         return weatherDao.list()
